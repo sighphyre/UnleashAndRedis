@@ -1,8 +1,9 @@
 import { createClient } from "redis";
 import { initialize } from "unleash-client";
 
-const SEGMENT_NAME = "someSegmentOfUsers";
-const TOKEN = "*:development:some-secret";
+const SEGMENT_NAME = "someSegmentOfUsers"; // We'll be using "someSegmentOfUsers" but the name is arbitrary
+const TOKEN = "*:development:some-secret"; // Prepopulated in the docker compose
+const USERS_TO_QUERY = [7, 8, 9];
 
 class RedisLayer {
   constructor() {
@@ -32,7 +33,7 @@ class RedisLayer {
 
 let redisLayer = new RedisLayer();
 await redisLayer.connect();
-await redisLayer.setup();
+await redisLayer.setup(); // Don't do this in prod, this is to populate our users in Redis, practically, this would be handled by another system
 
 const unleash = initialize({
   url: "http://unleash:4242/api",
@@ -40,12 +41,14 @@ const unleash = initialize({
   customHeaders: { Authorization: TOKEN },
 });
 
-const usersToQuery = [7, 8, 9];
+// End setup code, below is how this would be used
 
 async function pollUnleash() {
-  for (const userId of usersToQuery) {
+  for (const userId of USERS_TO_QUERY) {
+    // Ask our Redis client if this userId is in the segment
     const isInSegment = await redisLayer.isInSegment(userId);
     const isEnabled = unleash.isEnabled("test-toggle", {
+      // Pass the "true"/"false" context to Unleash
       isInSegment: isInSegment.toString(),
     });
 
