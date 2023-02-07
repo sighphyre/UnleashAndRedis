@@ -1,0 +1,17 @@
+{
+  "name": "segments-with-redis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.1",
+    "redis": "^4.6.4",
+    "unleash-client": "^3.18.0"
+  }
+}
