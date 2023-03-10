@@ -1,6 +1,26 @@
 # Unleash With Remote Segment
 
-This repo is to demonstrate how Unleash can be used with a Segment that's too large to fit into memory/pipe over network.
+This repo is to demonstrate how Unleash can be used with a Segment or set of constraints that are too large to fit into memory/pipe over network.
+
+## What is this?
+
+This is a simple example to demonstrate how you can use an external datastore along side Unleash to build a toggle strategy that resolves to `true` when a user is present in a potentially extremely large set of users. This does the check to see if a user is part of a list in a Redis instance, instead of using a constraint directly. This means the that your list of users can be as large as you want without impacting the performance of your Unleash SDK.
+
+## Why can't you do this with Unleash directly?
+
+There's no limit on the number of constraints that you can add to a toggle so to be clear, you _can_ do this with Unleash directly but you definitely _shouldn't_ do this with Unleash directly. Unleash is designed to be a feature flagging service and not a data store.
+
+There's two major problems with having a very complex set of constraints on a toggle:
+
+1) By design, the Unleash SDKs run a polling loop in the background to retrieve the the toggle configuration from the Unleash server, this means that as you add more and more constraints to the toggle, the amount of data that's transferred between your SDK and your server grows. This is fine for a small number of constraints but as you add more and more complex constraints, this can overload your network and significantly slow down your SDK. The more SDKs that have connected to your Unleash server, the worse this problem becomes.
+
+2) It's very likely that a complex constraint reflects some logic within your domain and that this logic is used in multiple places external to Unleash. This can become fragile and a maintenance burden if you constantly have to update this logic in Unleash as well as the other places it's being used. It's better to have a single source of truth for this.
+
+## Why doesn't Unleash support this out the box?
+
+The Unleash SDKs are designed to fast and unobtrusive. This means that resolving a large set of constraints at runtime results in one of two problems: either the SDK needs to resolve very large amounts of data, which can put pressure on your network or it needs to make a potentially slow network call to resolve the segment. Both of these are undesirable for the health of your application.
+
+# Running the example
 
 ## Prerequisites
 
