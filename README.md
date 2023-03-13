@@ -1,6 +1,6 @@
 # Unleash With Remote Segment
 
-This repo is to demonstrate how Unleash can be used with a Segment or set of constraints that are too large to fit into memory/pipe over network.
+This repo is to demonstrate how Unleash can be used with a Segment or set of constraints that are too large to fit into memory/pipe over network. There's no hard rule for what too large means but a constraint with over a hundred values is where you'd want to start looking into this approach.
 
 ## What is this?
 
