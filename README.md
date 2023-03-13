@@ -6,9 +6,9 @@ This repo is to demonstrate how Unleash can be used with a Segment or set of con
 
 This is a simple example to demonstrate how you can use an external datastore along side Unleash to build a toggle strategy that resolves to `true` when a user is present in a potentially extremely large set of users. This does the check to see if a user is part of a list in a Redis instance, instead of using a constraint directly. This means the that your list of users can be as large as you want without impacting the performance of your Unleash SDK.
 
-## Why can't you do this with Unleash directly?
+## Why shouldn't you do this with Unleash directly?
 
-There's no limit on the number of constraints that you can add to a toggle so to be clear, you _can_ do this with Unleash directly but you definitely _shouldn't_ do this with Unleash directly. Unleash is designed to be a feature flagging service and not a data store.
+There's no limit on the number of constraints that you can add to a toggle, so you might think that using Unleash directly in this way would be a good idea. **It's not.** Unleash is designed to be a feature flagging service and not a data store.
 
 There's two major problems with having a very complex set of constraints on a toggle:
 
