@@ -1,6 +1,10 @@
 # Unleash With Remote Segment
 
-This repo is to demonstrate how Unleash can be used with a Segment or set of constraints that are too large to fit into memory/pipe over network. There's no hard rule for what too large means but a constraint with over a hundred values is where you'd want to start looking into this approach.
+This repo demonstrates a way to use Unleash with large segments and complex constraints that are too large to easily fit in memory or be sent over the network. 
+
+As the number and complexities of [segments](https://docs.getunleash.io/reference/segments) and [constraints](https://docs.getunleash.io/reference/strategy-constraints) grow, so does the amount of data that Unleash must transmit to its SDKs. 
+
+There's no hard rule for what "too large" means, but if you are using close to a hundred values or more for a constraint, then you should start look into into this approach.
 
 ## What is this?
 
